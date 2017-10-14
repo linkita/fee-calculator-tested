@@ -1,0 +1,30 @@
+version: '2'
+services:
+    db:
+        image: mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony
+            MYSQL_USER: symfony
+            MYSQL_PASSWORD: symfony
+    php:
+        build: ./docker/php-fpm
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./:/var/www/feecalculator
+       #     - ./logs/symfony:/var/www/symfony/var/logs:cached
+        links:
+            - db
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - "82:80"
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx:cached

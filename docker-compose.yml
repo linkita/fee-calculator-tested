@@ -10,21 +10,11 @@ services:
             MYSQL_USER: symfony
             MYSQL_PASSWORD: symfony
     php:
-        build: ./docker/php-fpm
+        build: ./docker/php-apache
         ports:
-            - "9000:9000"
+            - "8080:80"
         volumes:
             - ./:/var/www/feecalculator
        #     - ./logs/symfony:/var/www/symfony/var/logs:cached
         links:
             - db
-    nginx:
-        build: ./docker/nginx
-        ports:
-            - "82:80"
-        links:
-            - php
-        volumes_from:
-            - php
-        volumes:
-            - ./logs/nginx/:/var/log/nginx:cached

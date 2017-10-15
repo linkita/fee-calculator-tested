@@ -25,8 +25,7 @@ class CalculateFee
     public function __construct(
         FeeCalculator $feeCalculator,
         TariffRepositoryInterface $tariffRepository
-    )
-    {
+    ) {
         $this->feeCalculator = $feeCalculator;
         $this->tariffRepository = $tariffRepository;
     }

@@ -15,6 +15,11 @@ use Linkita\App\Domain\Tariff\Tariff;
 
 class FeeCalculator
 {
+    const DEFAULT_METER_COST = 9.8;
+    const ADJUSTMENT_RATE = 1.05113;
+    const ELECTRICITY_TAX = 4.864;
+    const VAT = 21;
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -65,7 +70,7 @@ class FeeCalculator
      * @param string $rangeConsumption
      * @param float $power
      * @param Tariff $tariff
-     * @return float
+     * @return Money
      */
     public function calculate(
         string $productId,
@@ -73,7 +78,7 @@ class FeeCalculator
         string $rangeConsumption,
         float  $power,
         Tariff $tariff
-    ) : float {
+    ) : Money {
 
         $consumption = $this->consumptionRepository->getConsumptionByRangeOrFail($rangeConsumption);
         $normalizedPower = $this->powerRepository->getNormalizedPowerOrFail($power);
@@ -85,10 +90,15 @@ class FeeCalculator
             $this->paymentModeRepository->getPaymentModeOrFail($paymentMode)
         );
 
-        $price = $this->calculateConsumptionPrice($prices, $consumption, $product) +
+        $subtotal = $this->calculateConsumptionPrice($prices, $consumption, $product) +
                  $this->calculatePowerPrice($prices, $normalizedPower);
 
-        return $price;
+
+        $subtotal += ($subtotal * self::ADJUSTMENT_RATE * self::ELECTRICITY_TAX) / 100;
+        $subtotal += self::DEFAULT_METER_COST;
+        $total = $subtotal * (1 + (self::VAT / 100));
+
+        return new Money(round($total), '€');
     }
 
     /**

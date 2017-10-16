@@ -4,7 +4,7 @@
 namespace Linkita\App\Domain\Power;
 
 
-class PowerRepositoryInterface
+interface PowerRepositoryInterface
 {
-
+    public function getNormalizedPowerOrFail(float $normalizedPower) : Power;
 }

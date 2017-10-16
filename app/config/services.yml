@@ -33,3 +33,10 @@ services:
     # ApiBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    Linkita\App\Application\CalculateFee:
+        autowire: true
+        public: true
+
+    Linkita\App\Infrastructure\InMemoryTariffRepository:
+        autowire: true

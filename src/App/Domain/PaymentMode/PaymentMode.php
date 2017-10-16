@@ -6,8 +6,8 @@ namespace Linkita\App\Domain\PaymentMode;
 
 class PaymentMode
 {
-    public const MODE_PREPAYMENT = 'Prepayment';
-    public const MODE_POSTPAYMENT = 'Postpayment';
+    public const MODE_PREPAYMENT = 'prepayment';
+    public const MODE_POSTPAYMENT = 'postpayment';
 
     /**
      * @var string

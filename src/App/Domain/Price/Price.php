@@ -2,7 +2,7 @@
 
 namespace Linkita\App\Domain\Price;
 
-use Linkita\App\Domai\Product\Product;
+use Linkita\App\Domain\Product\Product;
 use Linkita\App\Domain\PaymentMode\PaymentMode;
 use Linkita\App\Domain\Tariff\Tariff;
 
@@ -23,15 +23,15 @@ class Price
     /**
      * @var float
      */
-    private $period1;
+    private $period1Price;
     /**
      * @var float
      */
-    private $period2;
+    private $period2Price;
     /**
      * @var float
      */
-    private $energy;
+    private $powerPrice;
 
     /**
      * Price constructor.
@@ -40,7 +40,7 @@ class Price
      * @param Tariff $tariff
      * @param float $period1
      * @param float $period2
-     * @param float $energy
+     * @param float $power
      */
     public function __construct(
         Product $product,
@@ -48,14 +48,14 @@ class Price
         Tariff $tariff,
         float $period1,
         float $period2,
-        float $energy
+        float $power
     ){
         $this->product = $product;
         $this->paymentMode = $paymentMode;
         $this->tariff = $tariff;
-        $this->period1 = $period1;
-        $this->period2 = $period2;
-        $this->energy = $energy;
+        $this->period1Price = $period1;
+        $this->period2Price = $period2;
+        $this->powerPrice = $power;
     }
 
     /**
@@ -109,9 +109,9 @@ class Price
     /**
      * @return float
      */
-    public function period1(): float
+    public function period1Price(): float
     {
-        return $this->period1;
+        return $this->period1Price;
     }
 
     /**
@@ -119,15 +119,15 @@ class Price
      */
     public function setPeriod1(float $period1)
     {
-        $this->period1 = $period1;
+        $this->period1Price = $period1;
     }
 
     /**
      * @return float
      */
-    public function period2(): float
+    public function period2Price(): float
     {
-        return $this->period2;
+        return $this->period2Price;
     }
 
     /**
@@ -135,15 +135,15 @@ class Price
      */
     public function setPeriod2(float $period2)
     {
-        $this->period2 = $period2;
+        $this->period2Price = $period2;
     }
 
     /**
      * @return float
      */
-    public function energy(): float
+    public function powerPrice(): float
     {
-        return $this->energy;
+        return $this->powerPrice;
     }
 
     /**

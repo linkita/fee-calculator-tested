@@ -12,12 +12,18 @@ class Power
     private $kWh;
 
     /**
+     * @var string
+     */
+    private $unit;
+
+    /**
      * Power constructor. Always kWh
      * @param float $kWh
      */
     public function __construct(float $kWh)
     {
         $this->kWh = $kWh;
+        $this->unit = 'Kwh';
     }
 
     /**
@@ -29,10 +35,10 @@ class Power
     }
 
     /**
-     * @param float $kWh
+     * @return string
      */
-    public function setKWh(float $kWh)
+    public function unit(): string
     {
-        $this->kWh = $kWh;
+        return $this->unit;
     }
 }

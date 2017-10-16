@@ -1,6 +1,6 @@
 <?php
 
-namespace Linkita\App\Domai\Product;
+namespace Linkita\App\Domain\Product;
 
 
 class Product

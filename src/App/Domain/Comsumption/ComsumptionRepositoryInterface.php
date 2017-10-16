@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Linkita\App\Domain\Compsumption;
+namespace Linkita\App\Domain\Consumption;
 
 
-class ComsumptionRepositoryInterface
+interface ConsumptionRepositoryInterface
 {
-
+    public function getConsumptionByRangeOrFail(string $range) : Consumption;
 }

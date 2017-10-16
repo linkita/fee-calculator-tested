@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Linkita\App\Domain\Compsumption;
+namespace Linkita\App\Domain\Consumption;
 
 
-class Comsumption
+class Consumption
 {
     public const LOW = 'flat';
     public const MEDIUM = 'house';
@@ -17,19 +17,43 @@ class Comsumption
     /**
      * @var float
      */
-    private $kWh;
+    private $p1;
+    /**
+     * @var float
+     */
+    private $p2;
+
 
     /**
-     * Comsumption constructor.
+     * Consumption constructor.
      * @param string $range
-     * @param float $kWh
+     * @param float $p1
+     * @param float $p2
      */
     public function __construct(
         string $range,
-        float $kWh
+        float $p1,
+        float $p2
     ){
         $this->range = $range;
-        $this->kWh = $kWh;
+        $this->p1 = $p1;
+        $this->p2 = $p2;
+    }
+
+    /**
+     * @return float
+     */
+    public function p1(): float
+    {
+        return $this->p1;
+    }
+
+    /**
+     * @return float
+     */
+    public function p2(): float
+    {
+        return $this->p2;
     }
 
     /**
@@ -48,19 +72,10 @@ class Comsumption
         $this->range = $range;
     }
 
-    /**
-     * @return float
-     */
-    public function kWh(): float
+
+    static public function isValidRange(string $range): bool
     {
-        return $this->kWh;
+        return $range === self::LOW || $range === self::MEDIUM || $range === self::HIGH;
     }
 
-    /**
-     * @param float $kWh
-     */
-    public function setKwh(float $kWh)
-    {
-        $this->kWh = $kWh;
-    }
 }

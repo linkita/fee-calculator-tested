@@ -1,9 +1,10 @@
 <?php
 
-namespace Linkita\App\Aplication;
+namespace Linkita\App\Application;
 
 
 use Linkita\App\Domain\FeeCalculator;
+use Linkita\App\Domain\Tariff\Tariff;
 use Linkita\App\Domain\Tariff\TariffRepositoryInterface;
 
 class CalculateFee
@@ -24,7 +25,8 @@ class CalculateFee
      */
     public function __construct(
         FeeCalculator $feeCalculator,
-        TariffRepositoryInterface $tariffRepository
+        TariffRepositoryInterface $tariffRepository,
+        string $tag
     ) {
         $this->feeCalculator = $feeCalculator;
         $this->tariffRepository = $tariffRepository;
@@ -33,15 +35,15 @@ class CalculateFee
     public function execute(CalculateFeeRequest $request)
     {
         return $this->feeCalculator->calculate(
-            $request->productId(),
+            $request->product(),
             $request->paymentMode(),
+            $request->consumption(),
             $request->power(),
-            $this->getTariff($request->power()),
-            $request->comsumption()
+            $this->getTariff($request->power())
         );
     }
 
-    private function getTariff($power)
+    private function getTariff($power) : Tariff
     {
         return $this->tariffRepository->getTariffByPower($power);
     }

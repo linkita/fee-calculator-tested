@@ -4,7 +4,7 @@
 namespace Linkita\App\Domain\Product;
 
 
-class ProductRepositoryInterface
+interface ProductRepositoryInterface
 {
-
+    public function getProductOrFail(string $product) : Product;
 }

@@ -2,13 +2,119 @@
 
 namespace Linkita\App\Domain;
 
+use Linkita\App\Domain\Consumption\Consumption;
+use Linkita\App\Domain\Consumption\ConsumptionRepositoryInterface;
+use Linkita\App\Domain\PaymentMode\PaymentModeRepositoryInterface;
+use Linkita\App\Domain\Power\Power;
+use Linkita\App\Domain\Power\PowerRepositoryInterface;
+use Linkita\App\Domain\Price\Price;
+use Linkita\App\Domain\Price\PriceRepositoryInterface;
+use Linkita\App\Domain\Product\Product;
+use Linkita\App\Domain\Product\ProductRepositoryInterface;
+use Linkita\App\Domain\Tariff\Tariff;
 
 class FeeCalculator
 {
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var PaymentModeRepositoryInterface
+     */
+    private $paymentModeRepository;
+    /**
+     * @var PriceRepositoryInterface
+     */
+    private $priceRepository;
+    /**
+     * @var PowerRepositoryInterface
+     */
+    private $powerRepository;
+    /**
+     * @var ConsumptionRepositoryInterface
+     */
+    private $consumptionRepository;
 
-    public function calculate() : int
+    /**
+     * FeeCalculator constructor.
+     * @param ProductRepositoryInterface $productRepository
+     * @param PaymentModeRepositoryInterface $paymentModeRepository
+     * @param PowerRepositoryInterface $powerRepository
+     * @param ConsumptionRepositoryInterface $consumptionRepository
+     * @param PriceRepositoryInterface $priceRepository
+     */
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        PaymentModeRepositoryInterface $paymentModeRepository,
+        PowerRepositoryInterface $powerRepository,
+        ConsumptionRepositoryInterface $consumptionRepository,
+        PriceRepositoryInterface $priceRepository
+
+    ) {
+        $this->productRepository = $productRepository;
+        $this->paymentModeRepository = $paymentModeRepository;
+        $this->powerRepository = $powerRepository;
+        $this->consumptionRepository = $consumptionRepository;
+        $this->priceRepository = $priceRepository;
+    }
+
+    /**
+     * @param string $productId
+     * @param string $paymentMode
+     * @param string $rangeConsumption
+     * @param float $power
+     * @param Tariff $tariff
+     * @return float
+     */
+    public function calculate(
+        string $productId,
+        string $paymentMode,
+        string $rangeConsumption,
+        float  $power,
+        Tariff $tariff
+    ) : float {
+
+        $consumption = $this->consumptionRepository->getConsumptionByRangeOrFail($rangeConsumption);
+        $normalizedPower = $this->powerRepository->getNormalizedPowerOrFail($power);
+        $product = $this->productRepository->getProductOrFail($productId);
+
+        $prices = $this->priceRepository->byProductAndTariffAndPaymentModeOrFail(
+            $product,
+            $tariff,
+            $this->paymentModeRepository->getPaymentModeOrFail($paymentMode)
+        );
+
+        $price = $this->calculateConsumptionPrice($prices, $consumption, $product) +
+                 $this->calculatePowerPrice($prices, $normalizedPower);
+
+        return $price;
+    }
+
+    /**
+     * @param Price $prices
+     * @param Consumption $consumption
+     * @param Product $product
+     * @return float
+     */
+    private function calculateConsumptionPrice(Price $prices, Consumption $consumption, Product $product) : float
     {
-        return 0;
+        $priceConsumption = $consumption->p1() * $prices->period1Price();
+        if ($product->isTwoPeriod()) {
+            $priceConsumption =+ $consumption->p2() * $prices->period2Price();
+        }
+
+        return $priceConsumption;
+    }
+
+    /**
+     * @param Price $prices
+     * @param Power $power
+     * @return float
+     */
+    private function calculatePowerPrice(Price $prices, Power $power)
+    {
+        return $power->kWh() * $prices->powerPrice();
     }
 
 }

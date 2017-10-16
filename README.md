@@ -1,6 +1,9 @@
 feecalculator
 =============
 
+
+AVISO: Este proyecto es un ejercicio de testing. Los precios y valores no pertenecen a ninguna comercializadora. Cualquier parecido con la realidad es pura coincidencia ;)
+
 A Symfony project created on October 14, 2017, 10:14 pm.
 
 ## Steps to Execute:

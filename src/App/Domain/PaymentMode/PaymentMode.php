@@ -20,6 +20,12 @@ class PaymentMode
      */
     public function __construct(string $mode)
     {
+        if (!self::isValidMode($mode)) {
+            throw (
+                new PaymentModeNotValidException(printf('%s is not valid mode', $mode))
+            );
+        }
+
         $this->mode = $mode;
     }
 

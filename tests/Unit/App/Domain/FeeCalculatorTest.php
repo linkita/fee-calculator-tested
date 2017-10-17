@@ -24,7 +24,6 @@ class FeeCalculatorTest extends TestCase
      */
     public function testCalculateFeeWithValidParametersReturnsValidFee()
     {
-
         $product = $this->prophesize(Product::class);
         $product->period()->willReturn('H');
         $product->isTwoPeriod()->willReturn(false);
@@ -60,7 +59,6 @@ class FeeCalculatorTest extends TestCase
         $priceRepository->byProductAndTariffAndPaymentModeOrFail(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn($price->reveal());
 
         $tariff = $this->prophesize(Tariff::class);
-
 
         $feeCalculator = new FeeCalculator(
             $productRepository->reveal(),

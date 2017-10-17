@@ -42,9 +42,9 @@ class CalculateFee
         );
     }
 
-    private function getTariff($power) : Tariff
+    private function getTariff(string $power) : Tariff
     {
-        return $this->tariffRepository->getTariffByPower($power);
+        return $this->tariffRepository->getTariffByPower(floatval($power));
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 
+namespace Linkita\Tests\Unit\App\Domain;
 
 use Linkita\App\Domain\Consumption\Consumption;
 use Linkita\App\Domain\Consumption\ConsumptionRepositoryInterface;

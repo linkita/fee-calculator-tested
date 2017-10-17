@@ -68,7 +68,7 @@ class FeeCalculator
      * @param string $productId
      * @param string $paymentMode
      * @param string $rangeConsumption
-     * @param float $power
+     * @param string $power
      * @param Tariff $tariff
      * @return Money
      */
@@ -76,7 +76,7 @@ class FeeCalculator
         string $productId,
         string $paymentMode,
         string $rangeConsumption,
-        float  $power,
+        string  $power,
         Tariff $tariff
     ) : Money {
 

@@ -9,7 +9,7 @@ use Linkita\App\Domain\Tariff\TariffRepositoryInterface;
 class InMemoryTariffRepository implements TariffRepositoryInterface
 {
 
-    public function getTariffByPower(string $power): string
+    public function getTariffByPower(float $power): string
     {
         return "foo";
     }

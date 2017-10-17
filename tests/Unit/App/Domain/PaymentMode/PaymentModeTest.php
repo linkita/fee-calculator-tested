@@ -1,5 +1,6 @@
 <?php
 
+namespace Linkita\Tests\Unit\App\Domain\PaymentMode;
 
 use Linkita\App\Domain\PaymentMode\PaymentMode;
 use Linkita\App\Domain\PaymentMode\PaymentModeNotValidException;
@@ -12,7 +13,9 @@ class PaymentModeTest extends TestCase
     {
         $paymentMode = new PaymentMode('prepayment');
 
-        $this->assertInstanceOf(PaymentMode::class, $paymentMode);
+        $this->assertTrue($paymentMode->isPrepayment());
+        $this->assertFalse($paymentMode->isPostpayment());
+        $this->assertEquals($paymentMode->mode(), 'prepayment');
     }
 
     public function testWhenPostpaymentIsGivenShouldBeReturnValidEntity()

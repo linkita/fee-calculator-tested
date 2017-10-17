@@ -41,4 +41,9 @@ class Power
     {
         return $this->unit;
     }
+
+    static function isValidPower(string $power)
+    {
+        return (preg_match('|^[0-9\.]+$|', $power) === 1)? true : false;
+    }
 }

@@ -4,6 +4,7 @@ namespace Linkita\App\Application;
 
 
 use InvalidArgumentException;
+use Linkita\App\Domain\Power\Power;
 use Linkita\App\Domain\Product\Product;
 use Linkita\App\Domain\consumption\consumption;
 use Linkita\App\Domain\PaymentMode\PaymentMode;
@@ -32,13 +33,13 @@ class CalculateFeeRequest
      * @param string $product
      * @param string $paymentMode
      * @param string $consumption
-     * @param float|null $power
+     * @param string|null $power
      */
     public function __construct(
         ? string $product,
         ? string $paymentMode,
         ? string $consumption,
-        ? float  $power
+        ? string $power
     ){
         $this->product = $product;
         $this->paymentMode = $paymentMode;
@@ -66,6 +67,11 @@ class CalculateFeeRequest
             $errors[] = 'Invalid range of consumption';
         }
 
+        if (!$this->power || !Power::isValidPower($this->power))
+        {
+            $errors[] = 'Invalid valid Power';
+        }
+
         if (count($errors)) {
             throw new InvalidArgumentException('Invalid request: ' . join('. ', $errors));
         }
@@ -88,9 +94,9 @@ class CalculateFeeRequest
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function power(): float
+    public function power(): string
     {
         return $this->power;
     }

@@ -22,7 +22,7 @@ class PaymentMode
     {
         if (!self::isValidMode($mode)) {
             throw (
-                new PaymentModeNotValidException(printf('%s is not valid mode', $mode))
+                new PaymentModeNotValidException(sprintf('%s is not valid mode', $mode))
             );
         }
 

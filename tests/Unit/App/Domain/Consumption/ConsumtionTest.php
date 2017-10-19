@@ -8,7 +8,7 @@ class ConsumtionTest extends TestCase
 {
 
     /**
-     * too happy path u__u
+     * lazy happy path u__u
      */
     public function testAnAssertTrueIsTrue()
     {

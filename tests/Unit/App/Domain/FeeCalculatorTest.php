@@ -15,6 +15,7 @@ use Linkita\App\Domain\Price\PriceRepositoryInterface;
 use Linkita\App\Domain\Product\Product;
 use Linkita\App\Domain\Product\ProductRepositoryInterface;
 use Linkita\App\Domain\Tariff\Tariff;
+use Linkita\Tests\Mocks\App\Domain\PriceMocks;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -79,6 +80,9 @@ class FeeCalculatorTest extends TestCase
 
         $expectedMoney = new Money(47.0, '€');
         $this->assertEquals($expectedMoney, $money);
+
+
+        $priceMock = new PriceMocks($this->prophesize(Price::class));
 
 
     }

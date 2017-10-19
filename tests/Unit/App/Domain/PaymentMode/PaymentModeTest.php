@@ -30,7 +30,7 @@ class PaymentModeTest extends TestCase
         /* Ey! The assert exception always first of the call to test */
         $this->expectException(PaymentModeNotValidException::class);
 
-        new PaymentMode('nopayment');
+        $a = new PaymentMode('nopayment');
 
     }
 

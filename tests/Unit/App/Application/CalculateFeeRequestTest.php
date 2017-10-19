@@ -4,6 +4,8 @@ namespace Linkita\Tests\Unit\App\Application;
 
 use InvalidArgumentException;
 use Linkita\App\Application\CalculateFeeRequest;
+use Linkita\App\Domain\Consumption\Consumption;
+use Linkita\App\Domain\Product\Product;
 use PHPUnit\Framework\TestCase;
 
 class CalculateFeeRequestTest extends TestCase
@@ -11,7 +13,7 @@ class CalculateFeeRequestTest extends TestCase
     /**
      * Happy Path
      */
-    public function testRightValueGivenShouldBeReturnValidRequest()
+    public function testRightValuesGivenShouldBeReturnValidRequest()
     {
         $calculateFeeRequest = new CalculateFeeRequest(
             'DH',
@@ -27,16 +29,16 @@ class CalculateFeeRequestTest extends TestCase
     }
 
 
-    public function testOneWrongValueGivenShouldFailWithErrors()
+    public function testOneWrongValueGivenShouldFailWithError()
     {
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid request: Invalid Payment Modes');
 
         new CalculateFeeRequest(
-            'DH',
+            Product::TWO_PERIODS,
             'willfail',
-            'castle',
+            Consumption::HIGH,
             '3.4'
         );
     }

@@ -39,5 +39,5 @@ class PriceMocks
     {
         return $this->basic()->reveal();
     }
-    
+
 }

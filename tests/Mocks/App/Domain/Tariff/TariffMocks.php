@@ -25,7 +25,7 @@ class TariffMocks extends TestCase
             ->getMock();
     }
 
-    public function getTariffOne()
+    public function getOne()
     {
         $mock = $this->basic();
         $mock
@@ -36,7 +36,7 @@ class TariffMocks extends TestCase
         return $mock;
     }
 
-    public function getTariffTwo()
+    public function getTwo()
     {
         $mock = $this->basic();
         $mock

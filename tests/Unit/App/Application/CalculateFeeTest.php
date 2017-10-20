@@ -22,7 +22,7 @@ class CalculateFeeTest extends TestCase
 
 
         $calculateFee = new CalculateFee(
-            $feeCalculatorMock->getMoney(),
+            $feeCalculatorMock->getMoney42(),
             $tariffRepositoryMock->getTariffOne()
         );
 

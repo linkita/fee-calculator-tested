@@ -4,6 +4,7 @@ namespace Linkita\Tests\Mocks\App\Domain\Tariff;
 
 use Linkita\App\Domain\Tariff\TariffRepositoryInterface;
 use PHPUnit\Framework\TestCase;
+use \Mockery as m;
 
 /**
  * Mockery example

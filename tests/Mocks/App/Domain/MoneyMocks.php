@@ -17,6 +17,7 @@ class MoneyMocks extends TestCase
     public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;
+
     }
 
     public function basic()

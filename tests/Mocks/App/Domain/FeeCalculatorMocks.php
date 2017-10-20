@@ -28,7 +28,7 @@ class FeeCalculatorMocks extends TestCase
     /**
      * @return FeeCalculator
      */
-    public function getMoney()
+    public function getMoney42()
     {
         $money = new MoneyMocks($this);
 

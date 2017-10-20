@@ -15,10 +15,10 @@ use Linkita\App\Domain\Tariff\Tariff;
 
 class FeeCalculator
 {
-    const DEFAULT_METER_COST = 9.8;
-    const ADJUSTMENT_RATE = 1.05113;
-    const ELECTRICITY_TAX = 4.864;
-    const VAT = 21;
+    private const DEFAULT_METER_COST = 9.8;
+    private const ADJUSTMENT_RATE = 1.05113;
+    private const ELECTRICITY_TAX = 4.864;
+    private const VAT = 21;
 
     /**
      * @var ProductRepositoryInterface

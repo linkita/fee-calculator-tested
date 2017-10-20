@@ -2,88 +2,78 @@
 
 namespace Linkita\Tests\Unit\App\Domain;
 
-use Linkita\App\Domain\Consumption\Consumption;
 use Linkita\App\Domain\Consumption\ConsumptionRepositoryInterface;
 use Linkita\App\Domain\FeeCalculator;
 use Linkita\App\Domain\Money;
-use Linkita\App\Domain\PaymentMode\PaymentMode;
 use Linkita\App\Domain\PaymentMode\PaymentModeRepositoryInterface;
-use Linkita\App\Domain\Power\Power;
 use Linkita\App\Domain\Power\PowerRepositoryInterface;
 use Linkita\App\Domain\Price\Price;
 use Linkita\App\Domain\Price\PriceRepositoryInterface;
-use Linkita\App\Domain\Product\Product;
 use Linkita\App\Domain\Product\ProductRepositoryInterface;
-use Linkita\App\Domain\Tariff\Tariff;
-use Linkita\Tests\Mocks\App\Domain\PriceMocks;
+use Linkita\Tests\Mocks\App\Domain\Consumption\ConsumptionRepositoryMocks;
+use Linkita\Tests\Mocks\App\Domain\PaymentMode\PaymentModeRepositoryMocks;
+use Linkita\Tests\Mocks\App\Domain\Power\PowerRepositoryMocks;
+use Linkita\Tests\Mocks\App\Domain\Price\PriceMocks;
+use Linkita\Tests\Mocks\App\Domain\Price\PriceRepositoryMocks;
+use Linkita\Tests\Mocks\App\Domain\Product\ProductRepositoryMocks;
+use Linkita\Tests\Mocks\App\Domain\Tariff\TariffMocks;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 
 class FeeCalculatorTest extends TestCase
 {
+    private const UNIQUE_PERIOD = 'H';
+    private const PREPAYMENT = 'prepayment';
+    private const RANGE = 'flat';
+    private const POWER = 3.4;
+
     /**
      * Happy path
      */
     public function testCalculateFeeWithValidParametersReturnsValidFee()
     {
-        $product = $this->prophesize(Product::class);
-        $product->period()->willReturn('H');
-        $product->isTwoPeriod()->willReturn(false);
 
-        $productRepository = $this->prophesize(ProductRepositoryInterface::class);
-        $productRepository->getProductOrFail(Argument::any())->shouldBeCalled()->willReturn($product->reveal());
+        $productRepositoryMocks =
+            new ProductRepositoryMocks($this->prophesize(ProductRepositoryInterface::class));
+        $productRepository = $productRepositoryMocks->basic()->build();
 
-        $paymentMode = $this->prophesize(PaymentMode::class);
-        $paymentMode->mode()->willReturn('prepayment');
+        $paymentModeRepositoryMocks =
+            new PaymentModeRepositoryMocks($this->prophesize(PaymentModeRepositoryInterface::class));
+        $paymentModeRepository = $paymentModeRepositoryMocks->basic()->build();
 
-        $paymentModeRepository = $this->prophesize(PaymentModeRepositoryInterface::class);
-        $paymentModeRepository->getPaymentModeOrFail(Argument::any())->shouldBeCalled()->willReturn($paymentMode->reveal());
+        $powerRepositoryMocks =
+            new PowerRepositoryMocks($this->prophesize(PowerRepositoryInterface::class));
+        $powerRepository = $powerRepositoryMocks->basic()->build();
 
-        $power = $this->prophesize(Power::class );
-        $power->kWh()->willReturn(3.4);
+        $consumptionRepositoryMock =
+            new ConsumptionRepositoryMocks($this->prophesize(ConsumptionRepositoryInterface::class));
+        $consumptionRepository = $consumptionRepositoryMock->basic()->build();
 
-        $powerRepository = $this->prophesize(PowerRepositoryInterface::class);
-        $powerRepository->getNormalizedPowerOrFail(Argument::any())->shouldBeCalled()->willReturn($power->reveal());
+        $priceRepositoryMock =
+            new PriceRepositoryMocks($this->prophesize(PriceRepositoryInterface::class));
+        $priceRepository = $priceRepositoryMock->basic()->build();
+        
 
-        $consumption = $this->prophesize(Consumption::class);
-        $consumption->p1()->willReturn(1024);
-        $consumption->p2()->willReturn(500);
-
-        $consumptionRepository = $this->prophesize(ConsumptionRepositoryInterface::class);
-        $consumptionRepository->getConsumptionByRangeOrFail(Argument::any())->shouldBeCalled()->willReturn($consumption->reveal());
-
-        $price = $this->prophesize(Price::class);
-        $price->period1Price()->willReturn(0.013);
-        $price->period2Price()->willReturn(0.011);
-        $price->powerPrice()->willReturn(4.1);
-
-        $priceRepository = $this->prophesize(PriceRepositoryInterface::class);
-        $priceRepository->byProductAndTariffAndPaymentModeOrFail(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled()->willReturn($price->reveal());
-
-        $tariff = $this->prophesize(Tariff::class);
+        $tariffMocks = new TariffMocks($this);
+        $tariff = $tariffMocks->basic();
 
         $feeCalculator = new FeeCalculator(
-            $productRepository->reveal(),
-            $paymentModeRepository->reveal(),
-            $powerRepository->reveal(),
-            $consumptionRepository->reveal(),
-            $priceRepository->reveal()
+            $productRepository,
+            $paymentModeRepository,
+            $powerRepository,
+            $consumptionRepository,
+            $priceRepository
         );
 
         $money = $feeCalculator->calculate(
-          'H',
-          'prepayment',
-          'flat',
-            3.4,
-            $tariff->reveal()
+          self::UNIQUE_PERIOD,
+          self::PREPAYMENT,
+          self::RANGE,
+            self::POWER,
+           $tariff
         );
 
         $expectedMoney = new Money(47.0, '€');
         $this->assertEquals($expectedMoney, $money);
-
-
-        $priceMock = new PriceMocks($this->prophesize(Price::class));
-
 
     }
 

@@ -17,7 +17,7 @@ class TariffMocks extends TestCase
         $this->testCase = $testCase;
     }
 
-    public function basic()
+    public function basic() : Tariff
     {
         return $this->testCase
             ->getMockBuilder(Tariff::class)

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Linkita\Tests\Mocks\App\Domain;
+namespace Linkita\Tests\Mocks\App\Domain\Price;
 
 
 use Linkita\App\Domain\Price\Price;
@@ -22,7 +22,7 @@ class PriceMocks
     }
 
     /**
-     * @return Price|ObjectProphecy
+     * @return PriceMocks
      */
     public function basic()
     {
@@ -30,14 +30,14 @@ class PriceMocks
         $this->prophet->period2Price()->willReturn(self::PERIOD_2_PRICE);
         $this->prophet->powerPrice()->willReturn(self::POWER_PRICE);
 
-        return $this->prophet;
+        return $this;
     }
     /**
      * @return Price
      */
     public function build(): Price
     {
-        return $this->basic()->reveal();
+        return $this->prophet->reveal();
     }
 
 }

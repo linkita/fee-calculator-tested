@@ -40,3 +40,6 @@ services:
 
     Linkita\App\Infrastructure\InMemoryTariffRepository:
         autowire: true
+
+    Linkita\App\Infrastructure\InMemoryProductRepository:
+        autowire: true

@@ -4,13 +4,14 @@
 namespace Linkita\App\Infrastructure;
 
 
+use Linkita\App\Domain\Tariff\Tariff;
 use Linkita\App\Domain\Tariff\TariffRepositoryInterface;
 
 class InMemoryTariffRepository implements TariffRepositoryInterface
 {
 
-    public function getTariffByPower(float $power): string
+    public function getTariffByPower(float $power): Tariff
     {
-        return "foo";
+        return new Tariff(Tariff::TWO);
     }
 }

@@ -51,8 +51,9 @@ class FeeCalculatorTest extends TestCase
         $priceRepositoryMock =
             new PriceRepositoryMocks($this->prophesize(PriceRepositoryInterface::class));
         $priceRepository = $priceRepositoryMock->basic()->build();
-        
 
+
+        /* Bad practice. Be consistent with your mock libraries. This case is for an exercise purpose only :) */
         $tariffMocks = new TariffMocks($this);
         $tariff = $tariffMocks->basic();
 
